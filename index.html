@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SkyFly Pro — Pemesanan Tiket</title>
+
+  <!-- Tailwind (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Libraries for PDF / QR -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="font-sans bg-gradient-to-b from-gray-100 to-white text-gray-800">
+
+  <!-- NAVBAR -->
+  <header class="fixed top-0 left-0 right-0 z-30">
+    <nav class="backdrop-blur bg-white/60 dark:bg-gray-900/60 border-b border-gray-200 dark:border-gray-800">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="text-2xl font-extrabold text-blue-700 dark:text-yellow-300">✈️ SkyFly</div>
+          <div class="hidden md:flex items-center gap-4 ml-6">
+            <button class="nav-btn" onclick="showPage('homePage')">Home</button>
+            <button class="nav-btn" onclick="showPage('pesanPage')">Pesan</button>
+            <button class="nav-btn" onclick="showPage('riwayatPage')">Riwayat</button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <button id="themeToggle" class="px-3 py-1 rounded-lg border text-sm">Dark</button>
+          <button class="btn-small" onclick="showPage('loginPage')">Login</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="pt-20">
+
+    <!-- HOME -->
+    <section id="homePage" class="page active min-h-screen flex items-center">
+      <div class="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <h1 class="text-5xl font-extrabold leading-tight text-blue-800 dark:text-white mb-4">
+            Terbang Nyaman, <span class="text-yellow-400">Tanpa Ribet</span>
+          </h1>
+          <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">SkyFly Pro — sistem pemesanan tiket modern: pilihan kelas, pembayaran simulasi, e-ticket PDF, dan desain yang enak dilihat.</p>
+
+          <div class="flex gap-4">
+            <button class="btn-primary-lg" onclick="showPage('pesanPage')">Pesan Sekarang</button>
+            <button class="btn-outline-lg" onclick="showPage('riwayatPage')">Lihat Riwayat</button>
+          </div>
+
+          <ul class="mt-8 grid gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <li>• Pilih maskapai & kelas (Ekonomi / Bisnis / First)</li>
+            <li>• Harga otomatis dan ringkasan harga</li>
+            <li>• Simulasi pembayaran + QR e-ticket</li>
+            <li>• Cetak/take PDF tiket</li>
+          </ul>
+        </div>
+
+        <div class="relative">
+          <div class="floating-card p-6 rounded-2xl shadow-2xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <div class="text-sm text-gray-500 dark:text-gray-300">Mulai dari</div>
+                <div class="text-2xl font-bold text-blue-700 dark:text-yellow-300">Rp800.000</div>
+              </div>
+              <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop&ixlib=rb-4.0.3&s=bb8a6f9f9d1cf4a3b9f8d7a3be5d9c1f" alt="plane" class="w-40 rounded-lg object-cover">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div class="text-xs text-gray-500 dark:text-gray-400">Cepat</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">Aman</div>
+              <div class="text-sm font-semibold">Check-in mudah</div>
+              <div class="text-sm font-semibold">E-ticket</div>
+            </div>
+          </div>
+
+          <div class="absolute -bottom-8 right-6 transform rotate-6">
+            <div class="badge p-2 rounded-xl bg-gradient-to-r from-yellow-300 to-yellow-400 font-bold shadow-lg">PROMO</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGIN -->
+    <section id="loginPage" class="page min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <div class="max-w-md w-full px-6 py-10 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border dark:border-gray-700">
+        <h2 class="text-2xl font-bold text-center text-blue-700 dark:text-yellow-300 mb-6">Masuk ke SkyFly</h2>
+
+        <form id="loginForm" class="space-y-4">
+          <div>
+            <label class="text-sm font-medium">Email</label>
+            <input id="email" type="email" class="input-field mt-1" placeholder="contoh@domain.com" required>
+          </div>
+          <div>
+            <label class="text-sm font-medium">Password</label>
+            <input id="password" type="password" class="input-field mt-1" placeholder="••••••••" required>
+          </div>
+
+          <button type="submit" class="btn-primary-lg w-full">Login</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- PESAN -->
+    <section id="pesanPage" class="page min-h-screen py-12 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+      <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8">
+        <!-- FORM -->
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border dark:border-gray-700">
+          <h3 class="text-2xl font-bold text-blue-700 dark:text-yellow-300 mb-4">Form Pemesanan</h3>
+
+          <form id="formPemesanan" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium">Nama Pemesan</label>
+              <input id="nama" type="text" class="input-field mt-1" required>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium">Kota Asal</label>
+                <input id="asal" type="text" class="input-field mt-1" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium">Kota Tujuan</label>
+                <input id="tujuan" type="text" class="input-field mt-1" required>
+              </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium">Tanggal</label>
+                <input id="tanggal" type="date" class="input-field mt-1" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium">Jumlah Tiket</label>
+                <input id="jumlah" type="number" class="input-field mt-1" min="1" value="1" required>
+              </div>
+            </div>
+
+            <div id="passengerInputsContainer" class="space-y-2"></div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium">Maskapai</label>
+                <select id="maskapai" class="input-field mt-1" onchange="updateHarga()">
+                  <option value="Garuda Indonesia" data-harga="1500000">Garuda Indonesia</option>
+                  <option value="Lion Air" data-harga="900000">Lion Air</option>
+                  <option value="Citilink" data-harga="800000">Citilink</option>
+                  <option value="AirAsia" data-harga="850000">AirAsia</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium">Kelas</label>
+                <select id="kelas" class="input-field mt-1" onchange="updateHarga()">
+                  <option value="Ekonomi" data-multiplier="1">Ekonomi</option>
+                  <option value="Bisnis" data-multiplier="1.8">Bisnis (+80%)</option>
+                  <option value="First Class" data-multiplier="2.5">First Class (+150%)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between mt-2">
+              <div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">Total Perkiraan</div>
+                <div id="totalHarga" class="text-2xl font-extrabold text-green-700 dark:text-green-300">Rp0</div>
+              </div>
+
+              <div>
+                <button type="button" class="btn-outline-lg" id="seatSelectBtn" onclick="openSeatModal()">Pilih Kursi</button>
+                <button type="button" class="btn-outline-lg ml-2" id="clearSeatsBtn" onclick="clearSeatAssignments()">Hapus Kursi</button>
+                <button type="submit" class="btn-primary-lg ml-3">Simpan & Buat Tiket</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- PREVIEW TICKET -->
+        <div class="sticky top-28">
+          <div id="ticketPreview" class="p-6 bg-gradient-to-br from-white to-blue-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-2xl border dark:border-gray-700">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h4 class="text-lg font-bold text-blue-700 dark:text-yellow-300">E-Ticket Preview</h4>
+                <div class="text-sm text-gray-500 dark:text-gray-400">SkyFly Pro — bukti pemesanan</div>
+              </div>
+              <div class="text-sm text-gray-500 dark:text-gray-400">No. <span id="orderIdPreview">—</span></div>
+            </div>
+
+            <div class="mb-4">
+              <div class="font-medium" id="previewName">Nama —</div>
+              <div class="text-sm text-gray-600 dark:text-gray-400" id="previewRoute">Asal → Tujuan</div>
+              <div class="text-xs text-gray-500 mt-2" id="previewDate">Tanggal —</div>
+            </div>
+
+            <div id="passengerPreviewList" class="mb-4">
+              <!-- dynamic list of passengers & seats -->
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 mb-4">
+              <div class="text-xs text-gray-600">Maskapai</div>
+              <div class="text-sm font-semibold" id="previewAirline">—</div>
+
+              <div class="text-xs text-gray-600">Kelas</div>
+              <div class="text-sm font-semibold" id="previewClass">—</div>
+
+              <div class="text-xs text-gray-600">Jumlah</div>
+              <div class="text-sm font-semibold" id="previewQty">—</div>
+
+              <div class="text-xs text-gray-600">Total</div>
+              <div class="text-sm font-semibold text-green-700" id="previewTotal">Rp0</div>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div id="qrcode" class="bg-white p-2 rounded-lg"></div>
+              <div class="flex gap-2">
+                <button class="btn-outline" id="downloadPdfBtn">Download PDF</button>
+                <button class="btn-outline" id="printBtn">Print</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 text-xs text-gray-500 dark:text-gray-400">
+            Tips: Cetak e-ticket atau simpan dalam HP kamu. QR code akan berisi ringkasan pesanan.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIWAYAT -->
+    <section id="riwayatPage" class="page min-h-screen py-16 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+      <div class="max-w-4xl mx-auto px-6">
+        <h3 class="text-3xl font-bold text-blue-700 dark:text-yellow-300 mb-6">Riwayat Pemesanan</h3>
+        <div id="riwayatContainer" class="space-y-4"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Payment Modal -->
+  <div id="paymentModal" class="fixed inset-0 hidden items-center justify-center bg-black/50 z-50">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 w-full max-w-lg shadow-2xl border dark:border-gray-700">
+      <h4 class="text-xl font-bold mb-2 text-blue-700 dark:text-yellow-300">Pembayaran (Simulasi)</h4>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Pilih metode pembayaran dan lakukan simulasi. (Tidak ada transaksi nyata)</p>
+
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <button class="pay-method p-3 border rounded-lg text-left" data-method="Transfer Bank">Transfer Bank</button>
+        <button class="pay-method p-3 border rounded-lg text-left" data-method="E-Wallet">E-Wallet</button>
+        <button class="pay-method p-3 border rounded-lg text-left" data-method="Kartu Kredit">Kartu Kredit</button>
+        <button class="pay-method p-3 border rounded-lg text-left" data-method="Indomaret/Alfamart">Indomaret/Alfamart</button>
+      </div>
+
+      <div class="flex justify-end gap-3">
+        <button class="btn-outline" onclick="closePaymentModal()">Batal</button>
+        <button class="btn-primary-lg" id="confirmPaymentBtn">Bayar (Simulasi)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seat selection modal -->
+  <div id="seatModal" class="fixed inset-0 hidden items-center justify-center bg-black/50 z-50 p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 w-full max-w-5xl shadow-2xl border dark:border-gray-700">
+      <div class="flex items-center justify-between mb-4">
+        <h4 class="text-lg font-bold text-blue-700 dark:text-yellow-300">Pilih Kursi (Klik penumpang lalu klik kursi)</h4>
+        <div class="flex gap-2">
+          <button class="btn-outline" onclick="closeSeatModal()">Batal</button>
+          <button class="btn-primary-lg" onclick="confirmSeats()">Simpan Kursi</button>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4">
+        <!-- Passenger list -->
+        <div>
+          <div class="text-sm text-gray-500 mb-2">Penumpang</div>
+          <div id="passengerList" class="space-y-2 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg max-h-96 overflow-auto"></div>
+        </div>
+
+        <!-- Seat map visualization -->
+        <div class="col-span-2">
+          <div class="text-sm text-gray-500 mb-2">Layout Kursi (A B C • • D E F)</div>
+          <div id="seatMap" class="seatmap bg-white dark:bg-gray-900 p-3 rounded-lg overflow-auto"></div>
+          <div class="text-xs text-gray-500 mt-2">Klik kursi untuk memilih. Kursi berwarna menunjukkan status: tersedia / terisi / dipilih.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="script.js"></script>
+</body>
+</html>
